@@ -1,3 +1,10 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -5,6 +12,18 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.link,
+.linkVue{
+  text-decoration: none;
+  color: #61dafb;
+}
+
+.link:hover,
+.linkVue:hover{
+  text-decoration: underline;
+  color: #48a1b9;
 }
 
 @media (prefers-reduced-motion: no-preference) {
