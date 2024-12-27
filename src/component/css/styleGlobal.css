@@ -8,15 +8,38 @@
 .container {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   align-items: center;
   justify-content: center;
   height: 100vh;
 }
 
 .divPai {
-  background-color: #61dafb;
   margin-top: 10px;
-  width: 10rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.quadrado {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: aliceblue;
+  color: black;
+  padding: 20px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.quadradoVazio {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: aliceblue;
+  color: black;
+  padding: 29.2px;
+  border: 1px solid black;
+  cursor: pointer;
 }
 
 body {
