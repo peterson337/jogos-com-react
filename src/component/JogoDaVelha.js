@@ -3,49 +3,183 @@ import { Link } from "react-router-dom";
 import "./css/styleGlobal.css";
 import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
+import { ModalComponent } from "./ModalComponent";
 
 export const JogoDaVelha = () => {
-  const [state, setState] = React.useState([]);
+  const obj = [
+    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "" },
+  ];
+  const [state, setState] = React.useState(obj);
   const [jogadorCount1, setJogadorCount1] = React.useState(0);
   const [jogadorCount2, setJogadorCount2] = React.useState(0);
-  const [jogador1, setJogador1] = React.useState("");
-  const [jogador2, setJogador2] = React.useState("");
+  const [jogador1, setJogador1] = React.useState("j");
+  const [jogador2, setJogador2] = React.useState("j2");
   const [jogoIniciado, setJogoIniciado] = React.useState(false);
+  const [isOpenModalFimDeJogo, setIsOpenModalFimDeJogo] = React.useState(false);
 
+  const MessageFimJogo = React.useRef("");
   const resetarJogo = () => {
-    setState([]);
-    setJogadorCount1(0);
-    setJogadorCount2(0);
-    setJogador1("");
-    setJogador2("");
+    setState(obj);
+    //setJogadorCount1(0);
+    //setJogadorCount2(0);
+    setJogador1("j");
+    setJogador2("j2");
     setJogoIniciado(false);
+    setIsOpenModalFimDeJogo(false);
   };
 
   React.useEffect(() => {
-    if (state.length < 9) {
-      for (let i = 1; i <= 9; i++) {
-        setState([...state, { jogador: "", letra: "" }]);
-      }
+    // if (state.length < 9) {
+    //   for (let i = 1; i <= 9; i++) {
+    //     setState([...state, { jogador: "", quemVenceu: "" }]);
+    //   }
+    // }
+
+    const [a, b, c, d, e, f, g, h, i] = state;
+
+    if (
+      (a.jogador === jogador1 &&
+        b.jogador === jogador1 &&
+        c.jogador === jogador1) ||
+      (a.jogador === jogador2 &&
+        b.jogador === jogador2 &&
+        c.jogador === jogador2)
+    ) {
+      MessageFimJogo.current =
+        a.quemVenceu === "jogador2"
+          ? "O segundo jogador venceu"
+          : a.quemVenceu === "CPU"
+          ? "A CPU venceu"
+          : "O primeiro jogador venceu";
+      setIsOpenModalFimDeJogo(true);
+    }
+
+    if (
+      (a.jogador === jogador1 &&
+        b.jogador === jogador1 &&
+        c.jogador === jogador1) ||
+      (a.jogador === jogador2 &&
+        b.jogador === jogador2 &&
+        c.jogador === jogador2)
+    ) {
+      setIsOpenModalFimDeJogo(true);
+
+      console.log("Segundo if");
+    }
+
+    if (
+      (a.jogador === jogador1 &&
+        b.jogador === jogador1 &&
+        c.jogador === jogador1) ||
+      (a.jogador === jogador2 &&
+        b.jogador === jogador2 &&
+        c.jogador === jogador2)
+    ) {
+      setIsOpenModalFimDeJogo(true);
+
+      console.log("Terceiro if");
+    }
+    if (
+      d.jogador === (jogador1 || jogador2) &&
+      e.jogador === (jogador1 || jogador2) &&
+      f.jogador === (jogador1 || jogador2)
+    ) {
+      setIsOpenModalFimDeJogo(true);
+
+      console.log("Terceiro if");
+    }
+
+    if (
+      g.jogador === jogador1 &&
+      h.jogador === jogador1 &&
+      i.jogador === jogador1
+    ) {
+      // setIsOpenModalFimDeJogo(true);
+
+      console.log("Quarta if");
+    }
+
+    if (
+      b.jogador === jogador1 &&
+      e.jogador === jogador1 &&
+      h.jogador === jogador1
+    ) {
+      // setIsOpenModalFimDeJogo(true);
+
+      console.log("Quinta if");
+    }
+
+    if (
+      c.jogador === jogador1 &&
+      f.jogador === jogador1 &&
+      i.jogador === jogador1
+    ) {
+      // setIsOpenModalFimDeJogo(true);
+
+      console.log("Setima if");
+    }
+
+    if (
+      a.jogador === jogador1 &&
+      e.jogador === jogador1 &&
+      i.jogador === jogador1
+    ) {
+      // setIsOpenModalFimDeJogo(true);
+
+      console.log("Otiva if");
+    }
+
+    if (
+      c.jogador === jogador1 &&
+      e.jogador === jogador1 &&
+      g.jogador === jogador1
+    ) {
+      // setIsOpenModalFimDeJogo(true);
+
+      console.log("Decima if");
+    } else if (state.every((item) => item.jogador !== "")) {
+      MessageFimJogo.current = "O jogo está empatado";
+      setIsOpenModalFimDeJogo(true);
     }
   }, [state]);
 
   const jogadaCPU = () => {
-    const randomNumber = Math.floor(Math.random() * 9);
-    const validarOndeCPUPodeJogar = state.filter(
-      (item, index) => randomNumber === index
+    // const randomNumber = Math.floor(Math.random() * 9);
+    // const validarOndeCPUPodeJogar = state.filter(
+    //   (item, index) => randomNumber === index
+    // );
+    // console.log(validarOndeCPUPodeJogar[0].jogador);
+    // // state[index].jogador !== ""
+    // if (validarOndeCPUPodeJogar[0].jogador !== jogador1) {
+    //   setState((prev) =>
+    //     prev.map((item, indexMap) =>
+    //       indexMap === randomNumber
+    //         ? { ...item, jogador: jogador2, quemVenceu: "CPU" }
+    //         : item
+    //     )
+    //   );
+    // } else jogadaCPU();
+
+    setState((prev) =>
+      prev.map((item, indexMap) =>
+        (indexMap === 0 && item.jogador === "") ||
+        (indexMap === 1 && item.jogador === "") ||
+        (indexMap === 2 && item.jogador === "") ||
+        (indexMap === 6 && item.jogador === "") ||
+        (indexMap === 3 && item.jogador === "") ||
+        (indexMap === 8 && item.jogador === "")
+          ? { ...item, jogador: jogador2, quemVenceu: "CPU" }
+          : item
+      )
     );
-    console.log(validarOndeCPUPodeJogar[0].jogador);
-    // state[index].jogador !== ""
-    if (validarOndeCPUPodeJogar[0].jogador !== jogador1) {
-      setState((prev) =>
-        prev.map((item, indexMap) =>
-          indexMap === randomNumber
-            ? { ...item, jogador: jogador2, letra: jogador2 }
-            : item
-        )
-      );
-      validarQuemVenceu();
-    } else jogadaCPU();
   };
 
   const quadradoClicado = (index) => {
@@ -53,48 +187,13 @@ export const JogoDaVelha = () => {
       setState((prev) =>
         prev.map((item, indexMap) =>
           indexMap === index
-            ? { ...item, jogador: jogador1, letra: jogador1 }
+            ? { ...item, jogador: jogador1, quemVenceu: "jogador1" }
             : item
         )
       );
-      validarQuemVenceu();
 
-      // setTimeout(() => {
-      //   jogadaCPU();
-      // }, 5000);
+      jogadaCPU();
     }
-  };
-
-  const validarQuemVenceu = () => {
-    const linha1 =
-      state[1].jogador != state[2].jogador &&
-      state[3].jogador != state[1].jogador;
-    console.log(linha1);
-    const linha2 =
-      state[3].jogador === state[4].jogador &&
-      state[3].jogador === state[5].jogador;
-    const linha3 =
-      state[6].jogador === state[7].jogador &&
-      state[6].jogador === state[8].jogador;
-    const coluna1 =
-      state[0].jogador === state[3].jogador &&
-      state[0].jogador === state[6].jogador;
-    const coluna2 =
-      state[1].jogador === state[4].jogador &&
-      state[1].jogador === state[7].jogador;
-    const coluna3 =
-      state[2].jogador === state[5].jogador &&
-      state[2].jogador === state[8].jogador;
-    const diagonal1 =
-      state[0].jogador === state[4].jogador &&
-      state[0].jogador === state[8].jogador;
-    const diagonal2 =
-      state[2].jogador === state[4].jogador &&
-      state[2].jogador === state[6].jogador;
-
-    // if (linha1 || linha2 || linha3 || coluna1 || coluna2 || coluna3 || diagonal1 || diagonal2) {
-
-    // }
   };
 
   const iniciarJogo = (letra, validation) => {
@@ -115,6 +214,16 @@ export const JogoDaVelha = () => {
 
   return (
     <>
+      {isOpenModalFimDeJogo && (
+        <ModalComponent
+          openModal={isOpenModalFimDeJogo}
+          closeModal={() => setIsOpenModalFimDeJogo(false)}
+          content={"JogoDaVelha"}
+          resetarJogo={() => resetarJogo()}
+          MessageFimJogo={MessageFimJogo.current}
+        />
+      )}
+
       <section className="container">
         <Link to="/" className="link">
           Voltar para a página inicial
