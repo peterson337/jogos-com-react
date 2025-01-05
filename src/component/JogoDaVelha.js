@@ -24,25 +24,66 @@ export const JogoDaVelha = () => {
   const [jogador2, setJogador2] = React.useState("j2");
   const [jogoIniciado, setJogoIniciado] = React.useState(false);
   const [isOpenModalFimDeJogo, setIsOpenModalFimDeJogo] = React.useState(false);
+  const [isJogador1Podejogar, setIsJogador1Podejogar] = React.useState(true);
+  const [chamarUseEffectNovamente, setChamarUseEffectNovamente] =
+    React.useState(true);
 
-  const MessageFimJogo = React.useRef("");
-  const resetarJogo = () => {
+  const [isJogador2Podejogar, setIsJogador2Podejogar] = React.useState(false);
+
+  const [isJogador2IgualCPU, setIsJogador2IgualCPU] = React.useState(true);
+
+  const resetarValores = () => {
     setState(obj);
-    //setJogadorCount1(0);
-    //setJogadorCount2(0);
+    setJogadorCount1(0);
+    setJogadorCount2(0);
     setJogador1("j");
     setJogador2("j2");
     setJogoIniciado(false);
     setIsOpenModalFimDeJogo(false);
+    setIsJogador1Podejogar(true);
+    setIsJogador2Podejogar(false);
   };
 
-  React.useEffect(() => {
-    // if (state.length < 9) {
-    //   for (let i = 1; i <= 9; i++) {
-    //     setState([...state, { jogador: "", quemVenceu: "" }]);
-    //   }
-    // }
+  const MessageFimJogo = React.useRef("");
+  const resetarJogo = (validation) => {
+    if (validation === "fimDeJogo") {
+      resetarValores();
+      return;
+    }
 
+    setState(obj);
+    setJogador1(jogador1);
+    setJogador2(jogador2);
+    setIsJogador1Podejogar(true);
+    setIsJogador2Podejogar(false);
+    setJogoIniciado(true);
+    setIsOpenModalFimDeJogo(false);
+
+    MessageFimJogo.current === "O primeiro jogador venceu"
+      ? setJogadorCount1((prev) => prev + 1)
+      : MessageFimJogo.current === "A CPU venceu"
+      ? setJogadorCount2((prev) => prev + 1)
+      : MessageFimJogo.current === "O segundo jogador venceu" &&
+        setJogadorCount2((prev) => prev + 1);
+  };
+
+  const modalFimDeJogo = (letra) => {
+    MessageFimJogo.current =
+      letra.quemVenceu === "jogador2"
+        ? "O segundo jogador venceu"
+        : letra.quemVenceu === "CPU"
+        ? "A CPU venceu"
+        : "O primeiro jogador venceu";
+    setIsOpenModalFimDeJogo(true);
+  };
+
+  const arrayNumber = [];
+
+  for (let i = 0; i < 9; i++) {
+    arrayNumber.push(i);
+  }
+
+  React.useEffect(() => {
     const [a, b, c, d, e, f, g, h, i] = state;
 
     if (
@@ -53,152 +94,155 @@ export const JogoDaVelha = () => {
         b.jogador === jogador2 &&
         c.jogador === jogador2)
     ) {
-      MessageFimJogo.current =
-        a.quemVenceu === "jogador2"
-          ? "O segundo jogador venceu"
-          : a.quemVenceu === "CPU"
-          ? "A CPU venceu"
-          : "O primeiro jogador venceu";
-      setIsOpenModalFimDeJogo(true);
+      modalFimDeJogo(a);
     }
 
     if (
       (a.jogador === jogador1 &&
-        b.jogador === jogador1 &&
-        c.jogador === jogador1) ||
+        d.jogador === jogador1 &&
+        g.jogador === jogador1) ||
       (a.jogador === jogador2 &&
-        b.jogador === jogador2 &&
-        c.jogador === jogador2)
+        d.jogador === jogador2 &&
+        g.jogador === jogador2)
     ) {
-      setIsOpenModalFimDeJogo(true);
+      modalFimDeJogo(d);
+    }
 
-      console.log("Segundo if");
+    if (
+      (h.jogador === jogador1 &&
+        g.jogador === jogador1 &&
+        i.jogador === jogador1) ||
+      (h.jogador === jogador2 &&
+        g.jogador === jogador2 &&
+        i.jogador === jogador2)
+    ) {
+      modalFimDeJogo(h);
+    }
+    if (
+      (d.jogador === jogador1 &&
+        e.jogador === jogador1 &&
+        f.jogador === jogador1) ||
+      (d.jogador === jogador2 &&
+        e.jogador === jogador2 &&
+        f.jogador === jogador2)
+    ) {
+      modalFimDeJogo(f);
+    }
+
+    if (
+      (g.jogador === jogador1 &&
+        h.jogador === jogador1 &&
+        i.jogador === jogador1) ||
+      (g.jogador === jogador2 &&
+        h.jogador === jogador2 &&
+        i.jogador === jogador2)
+    ) {
+      modalFimDeJogo(i);
+    }
+
+    if (
+      (b.jogador === jogador1 &&
+        e.jogador === jogador1 &&
+        h.jogador === jogador1) ||
+      (b.jogador === jogador2 &&
+        e.jogador === jogador2 &&
+        h.jogador === jogador2)
+    ) {
+      modalFimDeJogo(h);
+    }
+
+    if (
+      (c.jogador === jogador1 &&
+        f.jogador === jogador1 &&
+        i.jogador === jogador1) ||
+      (c.jogador === jogador2 &&
+        f.jogador === jogador2 &&
+        i.jogador === jogador2)
+    ) {
+      modalFimDeJogo(c);
     }
 
     if (
       (a.jogador === jogador1 &&
-        b.jogador === jogador1 &&
-        c.jogador === jogador1) ||
+        e.jogador === jogador1 &&
+        i.jogador === jogador1) ||
       (a.jogador === jogador2 &&
-        b.jogador === jogador2 &&
-        c.jogador === jogador2)
+        e.jogador === jogador2 &&
+        i.jogador === jogador2)
     ) {
-      setIsOpenModalFimDeJogo(true);
-
-      console.log("Terceiro if");
-    }
-    if (
-      d.jogador === (jogador1 || jogador2) &&
-      e.jogador === (jogador1 || jogador2) &&
-      f.jogador === (jogador1 || jogador2)
-    ) {
-      setIsOpenModalFimDeJogo(true);
-
-      console.log("Terceiro if");
+      modalFimDeJogo(i);
     }
 
     if (
-      g.jogador === jogador1 &&
-      h.jogador === jogador1 &&
-      i.jogador === jogador1
+      (c.jogador === jogador1 &&
+        e.jogador === jogador1 &&
+        g.jogador === jogador1) ||
+      (c.jogador === jogador2 &&
+        e.jogador === jogador2 &&
+        g.jogador === jogador2)
     ) {
-      // setIsOpenModalFimDeJogo(true);
-
-      console.log("Quarta if");
-    }
-
-    if (
-      b.jogador === jogador1 &&
-      e.jogador === jogador1 &&
-      h.jogador === jogador1
-    ) {
-      // setIsOpenModalFimDeJogo(true);
-
-      console.log("Quinta if");
-    }
-
-    if (
-      c.jogador === jogador1 &&
-      f.jogador === jogador1 &&
-      i.jogador === jogador1
-    ) {
-      // setIsOpenModalFimDeJogo(true);
-
-      console.log("Setima if");
-    }
-
-    if (
-      a.jogador === jogador1 &&
-      e.jogador === jogador1 &&
-      i.jogador === jogador1
-    ) {
-      // setIsOpenModalFimDeJogo(true);
-
-      console.log("Otiva if");
-    }
-
-    if (
-      c.jogador === jogador1 &&
-      e.jogador === jogador1 &&
-      g.jogador === jogador1
-    ) {
-      // setIsOpenModalFimDeJogo(true);
-
-      console.log("Decima if");
+      modalFimDeJogo(g);
     } else if (state.every((item) => item.jogador !== "")) {
       MessageFimJogo.current = "O jogo está empatado";
       setIsOpenModalFimDeJogo(true);
     }
-  }, [state]);
 
-  const jogadaCPU = () => {
-    // const randomNumber = Math.floor(Math.random() * 9);
-    // const validarOndeCPUPodeJogar = state.filter(
-    //   (item, index) => randomNumber === index
-    // );
-    // console.log(validarOndeCPUPodeJogar[0].jogador);
-    // // state[index].jogador !== ""
-    // if (validarOndeCPUPodeJogar[0].jogador !== jogador1) {
-    //   setState((prev) =>
-    //     prev.map((item, indexMap) =>
-    //       indexMap === randomNumber
-    //         ? { ...item, jogador: jogador2, quemVenceu: "CPU" }
-    //         : item
-    //     )
-    //   );
-    // } else jogadaCPU();
+    //  Jogada da CPU
 
-    setState((prev) =>
-      prev.map((item, indexMap) =>
-        (indexMap === 0 && item.jogador === "") ||
-        (indexMap === 1 && item.jogador === "") ||
-        (indexMap === 2 && item.jogador === "") ||
-        (indexMap === 6 && item.jogador === "") ||
-        (indexMap === 3 && item.jogador === "") ||
-        (indexMap === 8 && item.jogador === "")
-          ? { ...item, jogador: jogador2, quemVenceu: "CPU" }
-          : item
-      )
-    );
-  };
+    if (isJogador2IgualCPU) {
+      if (isJogador2Podejogar) {
+        const randomNumber = Math.floor(Math.random() * 9);
+
+        if (state[randomNumber].jogador === "") {
+          setState((prev) =>
+            prev.map((item, indexMap) =>
+              indexMap === randomNumber
+                ? { ...item, jogador: jogador2, quemVenceu: "CPU" }
+                : item
+            )
+          );
+          setIsJogador1Podejogar(true);
+          setIsJogador2Podejogar(false);
+        } else setChamarUseEffectNovamente((prev) => !prev);
+      }
+    }
+  }, [state, chamarUseEffectNovamente]);
 
   const quadradoClicado = (index) => {
-    if (jogoIniciado) {
-      setState((prev) =>
-        prev.map((item, indexMap) =>
-          indexMap === index
-            ? { ...item, jogador: jogador1, quemVenceu: "jogador1" }
-            : item
-        )
-      );
+    if (isJogador1Podejogar || !isJogador2IgualCPU) {
+      if (jogoIniciado) {
+        if (state[index].jogador === "") {
+          setIsJogador1Podejogar(false);
+          setState((prev) =>
+            prev.map((item, indexMap) =>
+              indexMap === index
+                ? {
+                    ...item,
+                    jogador: isJogador2Podejogar ? jogador2 : jogador1,
+                    quemVenceu: isJogador2Podejogar ? "jogador2" : "jogador1",
+                  }
+                : item
+            )
+          );
 
-      jogadaCPU();
-    }
+          if (isJogador2IgualCPU) {
+            setIsJogador2Podejogar(true);
+          } else if (isJogador2Podejogar && !isJogador2IgualCPU) {
+            setIsJogador2Podejogar(false);
+          } else if (!isJogador2Podejogar && !isJogador2IgualCPU) {
+            setIsJogador2Podejogar(true);
+          }
+        }
+      } else
+        alert(
+          "Este quadrado já tem uma letra, por favor escolha outro quadrado."
+        );
+    } else alert("Espere a jogada da CPU ou do segundo jogador.");
   };
 
   const iniciarJogo = (letra, validation) => {
     if (validation === "fimDeJogo") {
-      resetarJogo();
+      resetarJogo("fimDeJogo");
     } else {
       const letraEscolhida =
         validation === "iniciarJogo" ? letra.target.innerText : "";
@@ -229,6 +273,16 @@ export const JogoDaVelha = () => {
           Voltar para a página inicial
         </Link>
 
+        {!jogoIniciado && (
+          <Button
+            color={isJogador2IgualCPU ? "success" : "secondary"}
+            variant="contained"
+            onClick={() => setIsJogador2IgualCPU((prev) => !prev)}
+          >
+            {isJogador2IgualCPU ? "J1 VS J2" : "CPU"}
+          </Button>
+        )}
+
         <p>
           {!jogoIniciado ? (
             "Para começar o jogo é preciso escolher o X ou o O "
@@ -242,7 +296,6 @@ export const JogoDaVelha = () => {
             </Button>
           )}
         </p>
-
         <div style={{ ...flexBox, gap: "20px" }}>
           {!jogoIniciado ? (
             <>
@@ -263,7 +316,6 @@ export const JogoDaVelha = () => {
             </>
           )}
         </div>
-
         <div className="divPai">
           {state.map((item, index) => {
             return (

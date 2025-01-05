@@ -26,7 +26,6 @@ export const ModalComponent = (props) => {
   return (
     <Modal
       open={openModal}
-      onClose={closeModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
