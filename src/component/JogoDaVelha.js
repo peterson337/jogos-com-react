@@ -84,108 +84,33 @@ export const JogoDaVelha = () => {
   }
 
   React.useEffect(() => {
-    const [a, b, c, d, e, f, g, h, i] = state;
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
 
-    if (
-      (a.jogador === jogador1 &&
-        b.jogador === jogador1 &&
-        c.jogador === jogador1) ||
-      (a.jogador === jogador2 &&
-        b.jogador === jogador2 &&
-        c.jogador === jogador2)
-    ) {
-      modalFimDeJogo(a);
-    }
-
-    if (
-      (a.jogador === jogador1 &&
-        d.jogador === jogador1 &&
-        g.jogador === jogador1) ||
-      (a.jogador === jogador2 &&
-        d.jogador === jogador2 &&
-        g.jogador === jogador2)
-    ) {
-      modalFimDeJogo(d);
-    }
-
-    if (
-      (h.jogador === jogador1 &&
-        g.jogador === jogador1 &&
-        i.jogador === jogador1) ||
-      (h.jogador === jogador2 &&
-        g.jogador === jogador2 &&
-        i.jogador === jogador2)
-    ) {
-      modalFimDeJogo(h);
-    }
-    if (
-      (d.jogador === jogador1 &&
-        e.jogador === jogador1 &&
-        f.jogador === jogador1) ||
-      (d.jogador === jogador2 &&
-        e.jogador === jogador2 &&
-        f.jogador === jogador2)
-    ) {
-      modalFimDeJogo(f);
-    }
-
-    if (
-      (g.jogador === jogador1 &&
-        h.jogador === jogador1 &&
-        i.jogador === jogador1) ||
-      (g.jogador === jogador2 &&
-        h.jogador === jogador2 &&
-        i.jogador === jogador2)
-    ) {
-      modalFimDeJogo(i);
-    }
-
-    if (
-      (b.jogador === jogador1 &&
-        e.jogador === jogador1 &&
-        h.jogador === jogador1) ||
-      (b.jogador === jogador2 &&
-        e.jogador === jogador2 &&
-        h.jogador === jogador2)
-    ) {
-      modalFimDeJogo(h);
-    }
-
-    if (
-      (c.jogador === jogador1 &&
-        f.jogador === jogador1 &&
-        i.jogador === jogador1) ||
-      (c.jogador === jogador2 &&
-        f.jogador === jogador2 &&
-        i.jogador === jogador2)
-    ) {
-      modalFimDeJogo(c);
-    }
-
-    if (
-      (a.jogador === jogador1 &&
-        e.jogador === jogador1 &&
-        i.jogador === jogador1) ||
-      (a.jogador === jogador2 &&
-        e.jogador === jogador2 &&
-        i.jogador === jogador2)
-    ) {
-      modalFimDeJogo(i);
-    }
-
-    if (
-      (c.jogador === jogador1 &&
-        e.jogador === jogador1 &&
-        g.jogador === jogador1) ||
-      (c.jogador === jogador2 &&
-        e.jogador === jogador2 &&
-        g.jogador === jogador2)
-    ) {
-      modalFimDeJogo(g);
-    } else if (state.every((item) => item.jogador !== "")) {
-      MessageFimJogo.current = "O jogo está empatado";
-      setIsOpenModalFimDeJogo(true);
-    }
+    winningCombinations.forEach((combination) => {
+      const [a, b, c] = combination;
+      if (
+        (state[a].jogador === jogador1 &&
+          state[b].jogador === jogador1 &&
+          state[c].jogador === jogador1) ||
+        (state[a].jogador === jogador2 &&
+          state[b].jogador === jogador2 &&
+          state[c].jogador === jogador2)
+      ) {
+        modalFimDeJogo(state[a]);
+      } else if (state.every((item) => item.jogador !== "")) {
+        MessageFimJogo.current = "O jogo está empatado";
+        setIsOpenModalFimDeJogo(true);
+      }
+    });
 
     //  Jogada da CPU
 
@@ -283,19 +208,19 @@ export const JogoDaVelha = () => {
           </Button>
         )}
 
-        <p>
-          {!jogoIniciado ? (
-            "Para começar o jogo é preciso escolher o X ou o O "
-          ) : (
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => iniciarJogo(null, "fimDeJogo")}
-            >
-              Fim de jogo
-            </Button>
-          )}
-        </p>
+        {!jogoIniciado ? (
+          <p className="fraseInicial">
+            Para começar o jogo é preciso escolher o X ou o O
+          </p>
+        ) : (
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => iniciarJogo(null, "fimDeJogo")}
+          >
+            Fim de jogo
+          </Button>
+        )}
         <div style={{ ...flexBox, gap: "20px" }}>
           {!jogoIniciado ? (
             <>

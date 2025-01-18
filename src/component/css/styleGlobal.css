@@ -51,3 +51,10 @@ body {
   text-decoration: none;
   color: #61dafb;
 }
+
+@media (max-width: 768px) {
+  .fraseInicial {
+    width: 90%;
+    text-align: center;
+  }
+}
