@@ -1,0 +1,15 @@
+.image {
+  /* width: 10rem;
+  height: auto; */
+  margin: 10px;
+  border-radius: 20px;
+  filter: grayscale(100%) brightness(0%);
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.imagensContainer {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

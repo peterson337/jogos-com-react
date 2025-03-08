@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { Link } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -42,7 +43,7 @@ export const ModalComponent = (props) => {
           textAlign: "center",
         }}
       >
-        {content === "JogoDaVelha" && (
+        {content === "JogoDaVelha" ? (
           <>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               Fim de jogo
@@ -60,6 +61,39 @@ export const ModalComponent = (props) => {
             <Button variant="contained" color="error" onClick={recomecarJogo}>
               Recomeçar o jogo
             </Button>
+          </>
+        ) : content === "jogoDaMemoria" && (
+          <>
+          {
+            <>
+            {
+              MessageFimJogo === "Jogo iniciado"  && (
+                <>
+                  <Link to="/" className="link">Voltar para a página inicial</Link>
+
+                  <Typography id="modal-modal-title" variant="h6" component="h2">
+                  <h3>Como jogar</h3>
+
+                  <p>
+                  Clique nas cartas para encontrar os pares. O jogo termina quando todas
+                  as cartas forem encontradas ou se tiver 7 erros.
+                  </p>
+
+                </Typography>
+                <br />
+
+                <Button variant="contained"  onClick={resetarJogo}>
+                Começar o jogo
+                </Button>
+
+
+                </>
+              )
+            }
+            </>
+            
+          }
+
           </>
         )}
       </Box>

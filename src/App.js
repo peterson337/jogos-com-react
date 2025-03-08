@@ -3,6 +3,17 @@ import "./App.css";
 import { Link } from "react-router-dom";
 
 function App() {
+  const links = [
+    {
+      name: "Jogo da velha",
+      url: "/jogo-da-velha",
+    },
+
+    {
+      name: "Jogo da memória",
+      url: "/jogo-da-memoria",
+    },
+  ];
   return (
     <div className="App">
       <header className="App-header">
@@ -11,10 +22,12 @@ function App() {
         <br />
         <p>Escolha um jogo abaixo</p>
 
-        <Link className="link" to="/jogo-da-velha">
-          Jogo da velha
-        </Link>
-        <br />
+        {links.map((link) => (
+          <Link className="link" style={{ marginBottom: "10px" }} to={link.url}>
+            {link.name}
+          </Link>
+        ))}
+
         <h3>
           {" "}
           <a
