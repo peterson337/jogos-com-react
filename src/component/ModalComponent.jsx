@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Link } from "react-router-dom";
+import "../component/css/modal.css";
 
 const style = {
   position: "absolute",
@@ -18,7 +19,8 @@ const style = {
 };
 
 export const ModalComponent = (props) => {
-  const { openModal, closeModal, content, resetarJogo, MessageFimJogo } = props;
+   //prettier-ignore
+  const { openModal, closeModal, content, resetarJogo, MessageFimJogo, setSelect } = props;
   const recomecarJogo = () => {
     resetarJogo();
     closeModal();
@@ -67,19 +69,26 @@ export const ModalComponent = (props) => {
           {
             <>
             {
-              MessageFimJogo === "Jogo iniciado"  && (
+              MessageFimJogo === "Jogo iniciado"  ? (
                 <>
                   <Link to="/" className="link">Voltar para a página inicial</Link>
 
                   <Typography id="modal-modal-title" variant="h6" component="h2">
-                  <h3>Como jogar</h3>
+                  <h3>Como jogar 🤔</h3>
 
                   <p>
-                  Clique nas cartas para encontrar os pares. O jogo termina quando todas
-                  as cartas forem encontradas ou se tiver 7 erros.
+                   Clique nas cartas para encontrar os pares. O jogo termina quando todas
+                  as cartas forem encontradas ou se o tempo acabar. Boa sorte❕
                   </p>
 
                 </Typography>
+                <br />
+
+                <select className="select" id="select" onChange={(e) => setSelect(e.target.value)}>
+                <option value="Selecione algo" selected style={{ display: "none" }}>Selecione algo</option>
+                <option value="Animais">Animais</option>
+                <option value="Personagens">Personagens</option>
+              </select>
                 <br />
 
                 <Button variant="contained"  onClick={resetarJogo}>
@@ -88,6 +97,48 @@ export const ModalComponent = (props) => {
 
 
                 </>
+              ) : MessageFimJogo === "você perdeu"?  (
+                <>
+                  <Link to="/" className="link">Voltar para a página inicial</Link>
+
+                  <Typography id="modal-modal-title" variant="h6" component="h2">
+                  <h3>Você perdeu! 😐</h3>
+
+                  <p>
+                  ⏱ O tempo acabou  vezes. Mas não se preocupe, pois você  pode tente novamente clicando no botão abaixo. 👇
+                  </p>
+
+                </Typography>
+                <br />
+
+                <Button variant="contained" color="success"  onClick={resetarJogo}>
+                recomeçar o jogo
+                </Button>
+
+
+                </>
+
+              ) : MessageFimJogo === "você venceu" &&  (
+                <>
+                  <Link to="/" className="link">Voltar para a página inicial</Link>
+
+                  <Typography id="modal-modal-title" variant="h6" component="h2">
+                  <h3>╰(*°▽°*)╯ Você Venceu! 😎</h3>
+
+                  <p>
+                  🖖 Parabéns, Você achou todos os pares das imagens, você pode jogar novamente clicando no botão abaixo. 👇
+                  </p>
+
+                </Typography>
+                <br />
+
+                <Button variant="contained" color="success"  onClick={resetarJogo}>
+                recomeçar o jogo
+                </Button>
+
+
+                </>
+
               )
             }
             </>
