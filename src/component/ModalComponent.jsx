@@ -6,21 +6,22 @@ import Modal from "@mui/material/Modal";
 import { Link } from "react-router-dom";
 import "../component/css/modal.css";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
 export const ModalComponent = (props) => {
    //prettier-ignore
   const { openModal, closeModal, content, resetarJogo, MessageFimJogo, setSelect } = props;
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: content === "jogoDaMemoria"? 350: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
+  };
+
   const recomecarJogo = () => {
     resetarJogo();
     closeModal();
@@ -74,12 +75,14 @@ export const ModalComponent = (props) => {
                   <Link to="/" className="link">Voltar para a página inicial</Link>
 
                   <Typography id="modal-modal-title" variant="h6" component="h2">
-                  <h3>Como jogar 🤔</h3>
+                  <h3>Como jogar? 🤔</h3>
 
-                  <p>
-                   Clique nas cartas para encontrar os pares. O jogo termina quando todas
-                  as cartas forem encontradas ou se o tempo acabar. Boa sorte❕
+                  <p style={{margin: "8px"}}>
+                   Clique nas cartas para encontrar os pares. 
                   </p>
+
+                  <p>O jogo termina quando todas
+                  as cartas forem encontradas ou se o tempo acabar. Boa sorte!</p>
 
                 </Typography>
                 <br />
@@ -102,10 +105,10 @@ export const ModalComponent = (props) => {
                   <Link to="/" className="link">Voltar para a página inicial</Link>
 
                   <Typography id="modal-modal-title" variant="h6" component="h2">
-                  <h3>Você perdeu! 😐</h3>
+                  <h3>（；´д｀）ゞVocê perdeu! 😐</h3>
 
                   <p>
-                  ⏱ O tempo acabou  vezes. Mas não se preocupe, pois você  pode tente novamente clicando no botão abaixo. 👇
+                  ⏱ O tempo acabou. Mas não se preocupe, pois você  pode tentar novamente clicando no botão abaixo. 👇
                   </p>
 
                 </Typography>
