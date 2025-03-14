@@ -10,6 +10,11 @@ export const JogoDaMemoria = () => {
     segundaCarta: null,
   });
 
+  const [selectTimers, setSelectTimers] = React.useState({
+    min: null,
+    seg: null,
+    })
+
   const [acerto, setAcerto] = React.useState(0);
 
   const [isJogoIniciado, setIsJogoIniciado] = React.useState(false);
@@ -22,14 +27,19 @@ export const JogoDaMemoria = () => {
   const [timer, setTimer] = React.useState({minuto: 0, segundo: 0});
 
   const ajustarTempo = () => {
-    if (select === "Animais") {
-      setTimer({minuto: 2, segundo: 59})
+    if (selectTimers.min === null && selectTimers.seg === null) {
+      if (select === "Animais") {
+        setTimer({minuto: 2, segundo: 59})
+      }
+      if (select === "Personagens") {
+        setTimer({minuto: 5, segundo: 59})
+      }
     }
-    if (select === "Personagens") {
-      setTimer({minuto: 5, segundo: 59})
+
+    if (selectTimers.min !== null && selectTimers.seg !== null) {
+      setTimer({minuto: selectTimers.min, segundo: selectTimers.seg})
     }
   }
-
 
   const [imagens, setImagens] = React.useState([
     { id: 1, src: "/img/gato.png", alt: "gato", type: "Animais" },
@@ -156,6 +166,13 @@ export const JogoDaMemoria = () => {
   //prettier-ignore
   const embaralharCartas = () => setImagens((prevImagens) => [...prevImagens].sort(() => Math.random() - 0.5));
 
+   // for (let i = imagens.length - 1; i > 0; i--) {
+    // const j = Math.floor(Math.random() * (i + 1));
+    // [imagens[i], imagens[j]] = [imagens[j], imagens[i]];
+    // }
+
+    // setImagens(imagens);
+
   const mostrarCarta = (e) => {
     const  primeiraCarta = armazenarCartasMostradas.current.primeiraCarta;
     const  segundaCarta = armazenarCartasMostradas.current.segundaCarta;
@@ -204,6 +221,10 @@ export const JogoDaMemoria = () => {
   };
 
   const resetarJogo = () => {
+    if (select === "Selecione algo") {
+      alert("Selecione uma opção no dropdown para iniciar o jogo");
+      return;
+    }
     setIsJogoIniciado(true);
     ajustarTempo();
     setAcerto(0);
@@ -216,6 +237,8 @@ export const JogoDaMemoria = () => {
     setAcerto(0);
     setIsOpenModal(true);
     setMessageJogo("Jogo iniciado");
+    setSelectTimers({min: null, seg: null});
+    setSelect("Selecione algo");
   }
 
   return (
@@ -265,6 +288,7 @@ export const JogoDaMemoria = () => {
               resetarJogo={() => resetarJogo()}
               MessageFimJogo={messageJogo}
               setSelect={setSelect}
+              selectTimers={setSelectTimers}
             />
           </>
         ) : (

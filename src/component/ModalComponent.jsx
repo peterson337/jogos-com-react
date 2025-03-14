@@ -8,7 +8,7 @@ import "../component/css/modal.css";
 
 export const ModalComponent = (props) => {
    //prettier-ignore
-  const { openModal, closeModal, content, resetarJogo, MessageFimJogo, setSelect } = props;
+  const { openModal, closeModal, content, resetarJogo, MessageFimJogo, setSelect, selectTimers } = props;
 
   const style = {
     position: "absolute",
@@ -26,6 +26,17 @@ export const ModalComponent = (props) => {
     resetarJogo();
     closeModal();
   };
+
+  const numeros = React.useRef([]);
+
+  React.useEffect(() => {
+    if (content === "jogoDaMemoria") {
+      for (let i = 1; i < 61; i++) {
+        numeros.current.push(i);
+      }
+    }
+  }, [])
+  
 
   return (
     <Modal
@@ -83,6 +94,30 @@ export const ModalComponent = (props) => {
 
                   <p>O jogo termina quando todas
                   as cartas forem encontradas ou se o tempo acabar. Boa sorte!</p>
+
+                 <div style={{display: "inline-flex",}}>
+
+                 <span>Min:</span>   &nbsp;
+
+                  <select className="select" onChange={(e) => selectTimers(prev => ({...prev, min: e.target.value}))}>
+                  <option value="Selecione" selected style={{display:"none"}}>Selecione</option>
+                    {
+                      numeros.current.map((num) => (
+                        <option value={num} >{num}</option>
+                      ))
+                    }
+                  </select>
+                    &nbsp;
+                  <span>Seg:</span>  &nbsp;
+                   <select className="select" onChange={(e) => selectTimers(prev => ({...prev, seg: e.target.value}))}>
+                    <option value="Selecione" selected style={{display:"none"}}>Selecione</option>
+                  {
+                      numeros.current.map((num) => (
+                        <option value={num}>{num}</option>
+                      ))
+                    }
+                  </select>
+                 </div>
 
                 </Typography>
                 <br />
