@@ -272,8 +272,8 @@ export const JogoDaMemoria = () => {
                       alt={imagem.alt}
                       className="image"
                       onClick={(e) => mostrarCarta(e)}
-                      width={window.innerWidth > 500? 200 : 170}
-                      height={window.innerWidth > 500? 300 : 300}
+                      width={200}
+                      height={300}
                       />
                   </div>
             )
