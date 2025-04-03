@@ -7,15 +7,15 @@ import { Link } from "react-router-dom";
 import "../component/css/modal.css";
 
 export const ModalComponent = (props) => {
-   //prettier-ignore
-  const { openModal, closeModal, content, resetarJogo, MessageFimJogo, setSelect, selectTimers } = props;
+  //prettier-ignore
+  const { openModal, closeModal, content, resetarJogo, MessageFimJogo, setSelect, selectTimers, voltar } = props;
 
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: content === "jogoDaMemoria"? 350: 400,
+    width: content === "jogoDaMemoria" ? 350 : 400,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
@@ -35,8 +35,7 @@ export const ModalComponent = (props) => {
         numeros.current.push(i);
       }
     }
-  }, [])
-  
+  }, []);
 
   return (
     <Modal
@@ -76,114 +75,185 @@ export const ModalComponent = (props) => {
               Recomeçar o jogo
             </Button>
           </>
-        ) : content === "jogoDaMemoria" && (
-          <>
-          {
+        ) : (
+          content === "jogoDaMemoria" && (
             <>
-            {
-              MessageFimJogo === "Jogo iniciado"  ? (
+              {
                 <>
-                  <Link to="/" className="link">Voltar para a página inicial</Link>
+                  {MessageFimJogo === "Jogo iniciado" ? (
+                    <>
+                      <Link to="/" className="link">
+                        Voltar para a página inicial
+                      </Link>
 
-                  <Typography id="modal-modal-title" variant="h6" component="h2">
-                  <h3>Como jogar? 🤔</h3>
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        <h3>Como jogar? 🤔</h3>
 
-                  <p style={{margin: "8px"}}>
-                   Clique nas cartas para encontrar os pares. 
-                  </p>
+                        <p style={{ margin: "8px" }}>
+                          Clique nas cartas para encontrar os pares.
+                        </p>
 
-                  <p>O jogo termina quando todas
-                  as cartas forem encontradas ou se o tempo acabar. Boa sorte!</p>
+                        <p>
+                          O jogo termina quando todas as cartas forem
+                          encontradas ou se o tempo acabar. Boa sorte!
+                        </p>
 
-                 <div style={{display: "inline-flex",}}>
+                        <div style={{ display: "inline-flex" }}>
+                          <span>Min:</span> &nbsp;
+                          <select
+                            className="select"
+                            onChange={(e) =>
+                              selectTimers((prev) => ({
+                                ...prev,
+                                min: e.target.value,
+                              }))
+                            }
+                          >
+                            <option
+                              value="Selecione"
+                              selected
+                              style={{ display: "none" }}
+                            >
+                              Selecione
+                            </option>
+                            {numeros.current.map((num) => (
+                              <option value={num}>{num}</option>
+                            ))}
+                          </select>
+                          &nbsp;
+                          <span>Seg:</span> &nbsp;
+                          <select
+                            className="select"
+                            onChange={(e) =>
+                              selectTimers((prev) => ({
+                                ...prev,
+                                seg: e.target.value,
+                              }))
+                            }
+                          >
+                            <option
+                              value="Selecione"
+                              selected
+                              style={{ display: "none" }}
+                            >
+                              Selecione
+                            </option>
+                            <option value="0">0</option>
+                            {numeros.current.map((num) => (
+                              <option value={num}>{num}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </Typography>
+                      <br />
 
-                 <span>Min:</span>   &nbsp;
+                      <select
+                        className="select"
+                        id="select"
+                        onChange={(e) => setSelect(e.target.value)}
+                      >
+                        <option
+                          value="Selecione algo"
+                          selected
+                          style={{ display: "none" }}
+                        >
+                          Selecione algo
+                        </option>
+                        <option value="Animais">Animais</option>
+                        <option value="Personagens">Personagens</option>
+                      </select>
+                      <br />
 
-                  <select className="select" onChange={(e) => selectTimers(prev => ({...prev, min: e.target.value}))}>
-                  <option value="Selecione" selected style={{display:"none"}}>Selecione</option>
-                    {
-                      numeros.current.map((num) => (
-                        <option value={num} >{num}</option>
-                      ))
-                    }
-                  </select>
-                    &nbsp;
-                  <span>Seg:</span>  &nbsp;
-                   <select className="select" onChange={(e) => selectTimers(prev => ({...prev, seg: e.target.value}))}>
-                    <option value="Selecione" selected style={{display:"none"}}>Selecione</option>
-                  {
-                      numeros.current.map((num) => (
-                        <option value={num}>{num}</option>
-                      ))
-                    }
-                  </select>
-                 </div>
+                      <Button variant="contained" onClick={resetarJogo}>
+                        Começar o jogo
+                      </Button>
+                    </>
+                  ) : MessageFimJogo === "você perdeu" ? (
+                    <>
+                      <Link to="/" className="link">
+                        Voltar para a página inicial
+                      </Link>
 
-                </Typography>
-                <br />
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        <h3> Você perdeu! 😐</h3>
 
-                <select className="select" id="select" onChange={(e) => setSelect(e.target.value)}>
-                <option value="Selecione algo" selected style={{ display: "none" }}>Selecione algo</option>
-                <option value="Animais">Animais</option>
-                <option value="Personagens">Personagens</option>
-              </select>
-                <br />
+                        <p>
+                          ⏱ O tempo acabou. Mas não se preocupe, pois você pode
+                          tentar novamente clicando no botão abaixo. 👇
+                        </p>
+                      </Typography>
+                      <br />
 
-                <Button variant="contained"  onClick={resetarJogo}>
-                Começar o jogo
-                </Button>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        onClick={resetarJogo}
+                      >
+                        recomeçar o jogo
+                      </Button>
+                      <br />
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={voltar}
+                      >
+                        voltar para a página anterior
+                      </Button>
+                    </>
+                  ) : (
+                    MessageFimJogo === "você venceu" && (
+                      <>
+                        <Link to="/" className="link">
+                          Voltar para a página inicial
+                        </Link>
 
+                        <Typography
+                          id="modal-modal-title"
+                          variant="h6"
+                          component="h2"
+                        >
+                          <h3>╰(*°▽°*)╯ Você Venceu! 😎</h3>
 
+                          <p>
+                            🖖 Parabéns, Você achou todos os pares das imagens,
+                            você pode jogar novamente clicando no botão abaixo.
+                            👇
+                          </p>
+                        </Typography>
+                        <br />
+
+                        <Button
+                          variant="contained"
+                          color="success"
+                          onClick={resetarJogo}
+                        >
+                          recomeçar o jogo
+                        </Button>
+
+                        <br />
+
+                        <Button
+                          variant="contained"
+                          color="error"
+                          onClick={voltar}
+                        >
+                          voltar para a página anterior
+                        </Button>
+                      </>
+                    )
+                  )}
                 </>
-              ) : MessageFimJogo === "você perdeu"?  (
-                <>
-                  <Link to="/" className="link">Voltar para a página inicial</Link>
-
-                  <Typography id="modal-modal-title" variant="h6" component="h2">
-                  <h3>（；´д｀）ゞVocê perdeu! 😐</h3>
-
-                  <p>
-                  ⏱ O tempo acabou. Mas não se preocupe, pois você  pode tentar novamente clicando no botão abaixo. 👇
-                  </p>
-
-                </Typography>
-                <br />
-
-                <Button variant="contained" color="success"  onClick={resetarJogo}>
-                recomeçar o jogo
-                </Button>
-
-
-                </>
-
-              ) : MessageFimJogo === "você venceu" &&  (
-                <>
-                  <Link to="/" className="link">Voltar para a página inicial</Link>
-
-                  <Typography id="modal-modal-title" variant="h6" component="h2">
-                  <h3>╰(*°▽°*)╯ Você Venceu! 😎</h3>
-
-                  <p>
-                  🖖 Parabéns, Você achou todos os pares das imagens, você pode jogar novamente clicando no botão abaixo. 👇
-                  </p>
-
-                </Typography>
-                <br />
-
-                <Button variant="contained" color="success"  onClick={resetarJogo}>
-                recomeçar o jogo
-                </Button>
-
-
-                </>
-
-              )
-            }
+              }
             </>
-            
-          }
-
-          </>
+          )
         )}
       </Box>
     </Modal>

@@ -127,8 +127,8 @@ export const JogoDaMemoria = () => {
       const minuto = timer.minuto;
     
       if (segundo <= 0) {
-        setTimer(prev => ({...prev, segundo: 59}));
-        setTimer(prev => ({...prev, minuto: prev.minuto - 1}));
+        setTimer((prev) => ({ ...prev, segundo: 60 }));
+        setTimer((prev) => ({ ...prev, minuto: prev.minuto - 1 }));
       }
     
       if (segundo >= 0) {
@@ -173,52 +173,56 @@ export const JogoDaMemoria = () => {
 
     // setImagens(imagens);
 
-  const mostrarCarta = (e) => {
-    const  primeiraCarta = armazenarCartasMostradas.current.primeiraCarta;
-    const  segundaCarta = armazenarCartasMostradas.current.segundaCarta;
-
-    if (!primeiraCarta ||!segundaCarta) {
-      e.target.style.filter = "grayscale(0%) brightness(100%)";
-      e.target.style.transition = "all 1s";
-      if (!armazenarCartasMostradas.current.primeiraCarta) {
-        armazenarCartasMostradas.current.primeiraCarta = e.target;
-      } else {
-        armazenarCartasMostradas.current.segundaCarta = e.target;
-        
-        if (
-        armazenarCartasMostradas.current.primeiraCarta.alt ===
-        armazenarCartasMostradas.current.segundaCarta.alt
-      ) {
-        armazenarCartasMostradas.current.primeiraCarta.style.filter =
-          "grayscale(0%) brightness(100%)";
-          armazenarCartasMostradas.current.primeiraCarta.style.transition =
-          "all 1s";
-          armazenarCartasMostradas.current.segundaCarta.style.filter =
-          "grayscale(0%) brightness(100%)";
-        armazenarCartasMostradas.current.segundaCarta.style.transition =
-        "all 1s";
-        armazenarCartasMostradas.current.primeiraCarta = null;
-        armazenarCartasMostradas.current.segundaCarta = null;
-        setAcerto((prev) => prev + 1);
-      } else {
-        setTimeout(() => {
-          armazenarCartasMostradas.current.primeiraCarta.style.filter =
-          "grayscale(100%) brightness(0%)";
-          armazenarCartasMostradas.current.primeiraCarta.style.transition =
-          "all 1s";
-          armazenarCartasMostradas.current.segundaCarta.style.filter =
-            "grayscale(100%) brightness(0%)";
-          armazenarCartasMostradas.current.segundaCarta.style.transition =
-            "all 1s";
-          armazenarCartasMostradas.current.primeiraCarta = null;
-          armazenarCartasMostradas.current.segundaCarta = null;
-        }, 700);
+    const mostrarCarta = (e) => {
+      if (e.target.style.filter === "grayscale(0%) brightness(100%)") {
+        alert("Esta carta já foi selecionada. Escolha outra carta");
+        return;
       }
-    }
-  } else{
-    alert("você já selecionou duas cartas, espere as cartas ficarem pretas");
-  }
-  };
+      const primeiraCarta = armazenarCartasMostradas.current.primeiraCarta;
+      const segundaCarta = armazenarCartasMostradas.current.segundaCarta;
+  
+      if (!primeiraCarta || !segundaCarta) {
+        e.target.style.filter = "grayscale(0%) brightness(100%)";
+        e.target.style.transition = "all 1s";
+        if (!armazenarCartasMostradas.current.primeiraCarta) {
+          armazenarCartasMostradas.current.primeiraCarta = e.target;
+        } else {
+          armazenarCartasMostradas.current.segundaCarta = e.target;
+  
+          if (
+            armazenarCartasMostradas.current.primeiraCarta.alt ===
+            armazenarCartasMostradas.current.segundaCarta.alt
+          ) {
+            armazenarCartasMostradas.current.primeiraCarta.style.filter =
+              "grayscale(0%) brightness(100%)";
+            armazenarCartasMostradas.current.primeiraCarta.style.transition =
+              "all 1s";
+            armazenarCartasMostradas.current.segundaCarta.style.filter =
+              "grayscale(0%) brightness(100%)";
+            armazenarCartasMostradas.current.segundaCarta.style.transition =
+              "all 1s";
+            armazenarCartasMostradas.current.primeiraCarta = null;
+            armazenarCartasMostradas.current.segundaCarta = null;
+            setAcerto((prev) => prev + 1);
+          } else {
+            setTimeout(() => {
+              armazenarCartasMostradas.current.primeiraCarta.style.filter =
+                "grayscale(100%) brightness(0%)";
+              armazenarCartasMostradas.current.primeiraCarta.style.transition =
+                "all 1s";
+              armazenarCartasMostradas.current.segundaCarta.style.filter =
+                "grayscale(100%) brightness(0%)";
+              armazenarCartasMostradas.current.segundaCarta.style.transition =
+                "all 1s";
+              armazenarCartasMostradas.current.primeiraCarta = null;
+              armazenarCartasMostradas.current.segundaCarta = null;
+            }, 700);
+          }
+        }
+      } else {
+        alert("você já selecionou duas cartas, espere as cartas ficarem pretas");
+      }
+    };
 
   const resetarJogo = () => {
     if (select === "Selecione algo") {
@@ -268,8 +272,8 @@ export const JogoDaMemoria = () => {
                       alt={imagem.alt}
                       className="image"
                       onClick={(e) => mostrarCarta(e)}
-                      width={200}
-                      height={300}
+                      width={window.innerWidth > 500? 200 : 170}
+                      height={window.innerWidth > 500? 300 : 300}
                       />
                   </div>
             )
@@ -278,19 +282,20 @@ export const JogoDaMemoria = () => {
           </>
         ) : !isJogoIniciado ? (
           <>
-            <ModalComponent
-              content={"jogoDaMemoria"}
-              openModal={isOpenModal}
-              closeModal={() => {
-                setIsOpenModal(false);
-                setIsJogoIniciado(true);
-              }}
-              resetarJogo={() => resetarJogo()}
-              MessageFimJogo={messageJogo}
-              setSelect={setSelect}
-              selectTimers={setSelectTimers}
-            />
-          </>
+          <ModalComponent
+            content={"jogoDaMemoria"}
+            openModal={isOpenModal}
+            closeModal={() => {
+              setIsOpenModal(false);
+              setIsJogoIniciado(true);
+            }}
+            resetarJogo={() => resetarJogo()}
+            MessageFimJogo={messageJogo}
+            setSelect={setSelect}
+            selectTimers={setSelectTimers}
+            voltar={voltar}
+          />
+        </>
         ) : (
           <div>Jogo finalizado!</div>
         )}
