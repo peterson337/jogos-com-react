@@ -9,7 +9,7 @@ import { GoogleGenAI } from "@google/genai";
 export const JogoDaVelha = () => {
   const apiKey = process.env.GENERATIVE_API_KEY;
   // prettier-ignore
-  const model = new GoogleGenAI({ apiKey: "AIzaSyC_UBrAy-ggJvz5kN2x9lGYygp4CX-jwqc" });
+  const model = new GoogleGenAI({ apiKey: "" });
 
   const obj = [
     { jogador: "", quemVenceu: "", id: 0 },
