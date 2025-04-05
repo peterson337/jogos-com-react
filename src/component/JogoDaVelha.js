@@ -4,18 +4,23 @@ import "./css/styleGlobal.css";
 import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import { ModalComponent } from "./ModalComponent";
+import { GoogleGenAI } from "@google/genai";
 
 export const JogoDaVelha = () => {
+  const apiKey = process.env.GENERATIVE_API_KEY;
+  // prettier-ignore
+  const model = new GoogleGenAI({ apiKey: "AIzaSyC_UBrAy-ggJvz5kN2x9lGYygp4CX-jwqc" });
+
   const obj = [
-    { jogador: "", quemVenceu: "" },
-    { jogador: "", quemVenceu: "" },
-    { jogador: "", quemVenceu: "" },
-    { jogador: "", quemVenceu: "" },
-    { jogador: "", quemVenceu: "" },
-    { jogador: "", quemVenceu: "" },
-    { jogador: "", quemVenceu: "" },
-    { jogador: "", quemVenceu: "" },
-    { jogador: "", quemVenceu: "" },
+    { jogador: "", quemVenceu: "", id: 0 },
+    { jogador: "", quemVenceu: "", id: 1 },
+    { jogador: "", quemVenceu: "", id: 2 },
+    { jogador: "", quemVenceu: "", id: 3 },
+    { jogador: "", quemVenceu: "", id: 4 },
+    { jogador: "", quemVenceu: "", id: 5 },
+    { jogador: "", quemVenceu: "", id: 6 },
+    { jogador: "", quemVenceu: "", id: 7 },
+    { jogador: "", quemVenceu: "", id: 8 },
   ];
   const [state, setState] = React.useState(obj);
   const [jogadorCount1, setJogadorCount1] = React.useState(0);
@@ -25,8 +30,9 @@ export const JogoDaVelha = () => {
   const [jogoIniciado, setJogoIniciado] = React.useState(false);
   const [isOpenModalFimDeJogo, setIsOpenModalFimDeJogo] = React.useState(false);
   const [isJogador1Podejogar, setIsJogador1Podejogar] = React.useState(true);
-  const [chamarUseEffectNovamente, setChamarUseEffectNovamente] =
-    React.useState(true);
+  //prettier-ignore
+  const [chamarUseEffectNovamente, setChamarUseEffectNovamente] = React.useState(true);
+  const [reRender, setReRender] = React.useState(true);
 
   const [isJogador2Podejogar, setIsJogador2Podejogar] = React.useState(false);
 
@@ -114,21 +120,49 @@ export const JogoDaVelha = () => {
 
     //  Jogada da CPU
 
+    const testeArray = [];
+
     if (isJogador2IgualCPU) {
       if (isJogador2Podejogar) {
-        const randomNumber = Math.floor(Math.random() * 9);
+        const teste = async () => {
+          const arrayFormatado = JSON.stringify(state);
 
-        if (state[randomNumber].jogador === "") {
-          setState((prev) =>
-            prev.map((item, indexMap) =>
-              indexMap === randomNumber
-                ? { ...item, jogador: jogador2, quemVenceu: "CPU" }
-                : item
-            )
-          );
+          const response = await model.models.generateContent({
+            model: "gemini-2.0-flash",
+            contents: `
+              Veja este array de objetos: ${arrayFormatado}. Este obj representam os quarados de um jogo da velha e eu vou explicar como os ids representam a posição dos quadrados.
+               O  número 0 ao 2, representa a primeira fileira, o 3 ao 4 a segunda fileira e o 6 ao 8 a terceira fileira.
+                O 0, 3 e 6 representam a primeira coluna, o 1,4 e o 7 representam a segunda coluna,
+                o 2,5 e o 8 representam a terceira coluna. O 0, 4 e o 8 representam a primeira diagonal,
+                o 2, 4 e o 6 representam a segunda diagonal.
+                De acordo com objeto e a explicação só me responda com o id   que precisa ser um número.
+              
+            `,
+          });
+
+          const jogadaGemini = Number(response.text);
+
+          console.log(jogadaGemini);
+
+          const teste3 = state[Number(jogadaGemini)].jogador;
+
+          if (teste3 !== "") {
+            setChamarUseEffectNovamente((prev) => !prev);
+          }
+
+          state.map((item, index) => {
+            if (index == jogadaGemini) {
+              item.jogador = jogador2;
+              item.quemVenceu = "CPU";
+            }
+          });
+
+          setReRender((prev) => !prev);
           setIsJogador1Podejogar(true);
           setIsJogador2Podejogar(false);
-        } else setChamarUseEffectNovamente((prev) => !prev);
+        };
+        teste();
+        // } else setChamarUseEffectNovamente((prev) => !prev);
       }
     }
   }, [state, chamarUseEffectNovamente]);
